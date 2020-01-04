@@ -3,7 +3,7 @@ Section: user/games
 Priority: optional
 Maintainer: Mikko Vartiainen <mvartiainen@gmail.com>
 XSBC-Original-Maintainer: Marcelo Lira
-Build-Depends: libhildon1-dev, libhildonfm2-dev, libsdl1.2-dev, libsdl-mixer1.2-dev, hildon-games-wrapper-dev, osso-games-startup-dev
+Build-Depends: libhildon1-dev, libhildonfm2-dev, libsdl1.2-dev, libsdl-mixer1.2-dev, hildon-games-wrapper-dev, osso-games-startup-dev, cdbs
 Standards-Version: 3.6.0
 
 
