@@ -1,0 +1,84 @@
+crazyparking (0.2.7-3) unstable; urgency=low
+
+  * updated package icon
+  * power saving when in selected mode
+  * detect screen blanking
+  * remove sound option, disable sound (because of MB#5524)
+
+ -- Mikko Vartiainen <mvartiainen@gmail.com>  Mon, 28 Dec 2009 23:08:02 +0000
+
+crazyparking (0.2.7-2) unstable; urgency=low
+
+  * updated for Fremantle
+  * removed osso-help, maemo-select-menu-location
+  * optify
+  * bigger package icon
+
+ -- Mikko Vartiainen <mvartiainen@gmail.com>  Sat, 19 Dec 2009 18:58:39 +0000
+
+crazyparking (0.2.7-1) unstable; urgency=low
+
+  * Updated to Diablo.
+
+ -- Mikko Vartiainen <mvartiainen@gmail.com>  Sat, 25 Oct 2008 20:49:00 +0300
+
+crazyparking (0.2.7) unstable; urgency=low
+
+  * Updated to Maemo 4.0.
+
+ -- Marcelo Lira <setanta@gmail.com>  Fri, 26 Oct 2007 09:00:00 -0300
+
+crazyparking (0.2.6) unstable; urgency=low
+
+  * Updated to Maemo 2.0.
+
+ -- Eduardo Lima <eduardo.lima@indt.org.br>  Wed, 23 Aug 2006 18:54:21 -0300
+
+crazyparking (0.2.5) unstable; urgency=low
+
+  * Included plugin.
+
+ -- Talita Menezes <talita.menezes@indt.org.br>  Fri,  28 Apr 2006 19:07:00 -0300
+
+crazyparking (0.2.4) unstable; urgency=low
+
+  * Removed application installer support.
+  * Removed sending pause command to shadowapp on game pause.
+
+ -- Talita Menezes <talita.menezes@indt.org.br>  Fri,  24 Feb 2006 15:27:00 -0300
+
+crazyparking (0.2.3) unstable; urgency=low
+
+  * Added application installer support.
+  * Increased speed.
+
+ -- Cidorvan Leite <cidorvan.leite@indt.org.br>  Wed,  10 Aug 2005 18:37:00 -0300
+
+crazyparking (0.2.2) unstable; urgency=low
+
+  * Added option to send quit command to shadowapp on game quit.
+
+ -- Andre Moreira Magalhaes <andre.magalhaes@indt.org.br>  Fri,  20 May 2005 14:13:05 +0200
+
+crazyparking (0.2.1) unstable; urgency=low
+
+  * Changed package name
+  * Modified to be in compliant with new games-startup.
+
+ -- Andre Moreira Magalhaes <andre.magalhaes@indt.org.br>  Thu,  10 May 2005 14:06:03 +0200
+
+crazyparking (0.2) unstable; urgency=low
+
+  * Added games-startup support
+  * Added autotools stuff support
+
+ -- Cidorvan Leite <cidorvan.leite@indt.org>  Thu,  28 Apr 2005 10:29:17 +0200
+ -- Andre Moreira Magalhaes <andre.magalhaes@indt.org.br>  Thu,  28 Apr 2005 10:29:17 +0200
+  
+crazyparking (0.1) unstable; urgency=low
+
+  * Initial release
+  * Debianized package
+
+ -- Cidorvan Leite <cidorvan.leite@indt.org>  Wed,  20 Apr 2005 20:25:24 +0200
+ -- Andre Moreira Magalhaes <andre.magalhaes@indt.org.br>  Wed,  20 Apr 2005 20:25:24 +0200
