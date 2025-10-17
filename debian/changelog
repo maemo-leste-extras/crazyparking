@@ -1,3 +1,12 @@
+crazyparking (0.2.7-4) unstable; urgency=medium
+
+  * Build for Maemo Leste
+  * Convert from autotools to meson
+  * Remove osso/hildon games wrapper/startup
+  * Modernize debian/
+
+ -- Thomas Perl <m@thp.io>  Fri, 17 Oct 2025 13:39:09 +0200
+
 crazyparking (0.2.7-3) unstable; urgency=low
 
   * updated package icon

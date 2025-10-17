@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/osso_games_startup @datadir@/crazyparking/crazyparking.conf

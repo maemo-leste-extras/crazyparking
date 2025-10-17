@@ -26,16 +26,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
-#ifndef MAZEPREFIX
-#define MAZEPREFIX	"maze"
-#endif
-#ifndef GFXPREFIX
-#define GFXPREFIX	"gfx"
-#endif
-#ifndef SOUNDPREFIX
-#define SOUNDPREFIX	"sound"
-#endif
-
 #define WIDTH	6
 #define HEIGHT	6
 #define OFFSETX	171

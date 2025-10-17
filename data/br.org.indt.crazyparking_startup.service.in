@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=br.org.indt.crazyparking_startup
-Exec=@prefix@/bin/crazyparking.sh

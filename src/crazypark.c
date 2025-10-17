@@ -20,42 +20,75 @@
 * 02110-1301 USA
 *
 */
-#include <gtk/gtk.h>
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
-
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <hgw/hgw.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
 #include "images.h"
 #include "level.h"
-#include "callbacks.h"
+#include "crazypark.h"
+#include "config.h"
 
-#define SETTINGS_LEVEL "/apps/osso/crazyparking/level"
-#define SETTINGS_SOUND "/apps/osso/crazyparking/sound"
+char *
+crazypark_file_path(const char *filename)
+{
+    char *result = NULL;
 
-HgwContext *hgw_context = NULL;
+    int res = asprintf(&result, "%s/%s", CRAZYPARKING_DATADIR, filename);
+    if (res == -1) {
+        fprintf(stderr, "Cannot allocate string buffer\n");
+        exit(1);
+    }
 
+    struct stat st;
+    if (stat(result, &st) != 0) {
+        // File does not exist; try local path
+        free(result);
+        res = asprintf(&result, "data/%s", filename);
+        if (res == -1) {
+            fprintf(stderr, "Cannot allocate string buffer\n");
+            exit(1);
+        }
+    }
+
+    return result;
+}
+
+static char
+crazypark_save_file_path[PATH_MAX];
+
+// Pause the game
+int exit_callback(int errcode) {
+	FILE *han;
+
+	// Save state
+	han = fopen(crazypark_save_file_path, "wb");
+	if (han) {
+		fwrite(&actual_level, sizeof(int), 1, han);
+		fwrite(&moves, sizeof(int), 1, han);
+		fwrite(car, sizeof(struct CAR), cars, han);
+		fclose(han);
+	}
+
+	return 0;
+}
 
 // Main function
-int crazy_main() {
+int main(int argc, char **argv) {
 	FILE *han;
 	SDL_Event event;
 	int b_up = 1, x, y, i, done = 0;
-	int enable_sound, level;
-	int has_focus = 1;
-	Uint32 timeout = 10000;
-	
+	int enable_sound, level, fullscreen;
 
-    GConfClient *gc_client = NULL;
-    g_type_init();
-    gc_client = gconf_client_get_default();
-    level = gconf_client_get_int(gc_client, SETTINGS_LEVEL, NULL);
-    //enable_sound = gconf_client_get_int(gc_client, SETTINGS_SOUND, NULL);
-    enable_sound = 0;
+        (void)snprintf(crazypark_save_file_path, sizeof(crazypark_save_file_path),
+                "%s/.crazyparking-save", getenv("HOME") ?: "/tmp");
 
+        // TODO: Make those settings configurable
+        level = 1;
+        enable_sound = 1;
+        fullscreen = 1;
 
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
@@ -68,12 +101,12 @@ int crazy_main() {
         sound = 1;
 
 	// Initialize video
-	screen = SDL_SetVideoMode(800, 480, 16, SDL_SWSURFACE | SDL_FULLSCREEN);
+	screen = SDL_SetVideoMode(800, 480, 16, SDL_SWSURFACE | (fullscreen ? SDL_FULLSCREEN : 0));
 	if (screen == NULL) {
 		fprintf(stderr, "Unable to set 800x480 video: %s\n", SDL_GetError());
 		return 0;
 	}
-	SDL_ShowCursor(SDL_DISABLE);
+	//SDL_ShowCursor(SDL_DISABLE);
 	SDL_WM_SetCaption("CrazyParking", NULL);
 
 	// Load images
@@ -84,15 +117,20 @@ int crazy_main() {
 
 	// Load sounds
   	if (sound) {
-	  	scar = Mix_LoadWAV(SOUNDPREFIX "/car.wav");
-	  	struck = Mix_LoadWAV(SOUNDPREFIX "/truck.wav");
+                char *fn = crazypark_file_path("sounds/car.wav");
+	  	scar = Mix_LoadWAV(fn);
+                free(fn);
+
+                fn = crazypark_file_path("sounds/truck.wav");
+	  	struck = Mix_LoadWAV(fn);
+                free(fn);
   	}
 
 	// Initialize game
     actual_level = level -1;
 	Reset();
 	// Load state
-	han = fopen("/tmp/.crazyparking-save", "rb");
+	han = fopen(crazypark_save_file_path, "rb");
 	if (han) {
 		fread(&actual_level, sizeof(int), 1, han);
 		fread(&moves, sizeof(int), 1, han);
@@ -128,14 +166,6 @@ int crazy_main() {
 				exit_callback(0);
 				break;
 
-			// Window focus change
-			case SDL_ACTIVEEVENT:
-				if (event.active.gain == 0) {
-					done = 1;
-					exit_callback(0);
-				}
-				break;
-
 			// Button released
 			case SDL_MOUSEBUTTONUP:
 				b_up = 1;
@@ -143,7 +173,6 @@ int crazy_main() {
 
 			// Button pressed
 			case SDL_MOUSEBUTTONDOWN:
-				has_focus = 1;
 				if (!b_up) break;
 				else b_up = 0;
 
@@ -265,29 +294,6 @@ int crazy_main() {
 
 		// Make scene
 		DrawScreen();
-    		//hgw_msg_compat_receive(hgw_context, 0);
-
-#if HGW_FUNC
-		HgwMessage hgw_message;
-		if ( !hgw_msg_check_incoming(hgw_context, &hgw_message, HGW_MSG_FLAG_INVOKE_CB) ) {
-			if (hgw_message.type == HGW_MSG_TYPE_DEVSTATE && (hgw_message.e_val & HGW_DEVICE_STATE_DISPLAYOFF)) {
-				has_focus = 1;
-			} 
-			if (hgw_message.type == HGW_MSG_TYPE_DEVSTATE 
-			&& (hgw_message.e_val & (HGW_DEVICE_STATE_DISPLAYOFF))
-			&& (hgw_message.e_val & (HGW_DEVICE_STATE_ON))) {
-				has_focus = 0;
-			} 
-		}
-		hgw_msg_free_data(&hgw_message);
-#endif
-
-		// Timeout
-		if (has_focus) timeout = SDL_GetTicks() + 10000;
-		if (SDL_GetTicks() > timeout) {
-			done = 1;
-			exit_callback(0);
-		}
 	}
 
 	// Shut down SDL
@@ -297,37 +303,8 @@ int crazy_main() {
 		Mix_CloseAudio();
 	}
 
-    gconf_client_set_int(gc_client, SETTINGS_LEVEL, actual_level, NULL);
+        // TODO: save actual_level -> SETTINGS_LEVEL
 	FreeSurfaces();
 	SDL_Quit();
-	return 0;
-}
-
-
-// Initialize libshadow
-int main(int argc, char **argv) {
-
-#if HGW_FUNC
-	hgw_context = hgw_context_compat_init(argc, argv);
-	if (!hgw_context) {
-		fprintf(stderr, "Cannot init hildon-games-startup!\n");
-		return 0;
-	}
-	hgw_compat_set_cb_exit(hgw_context, exit_callback);
-	hgw_compat_set_cb_quit(hgw_context, quit_callback);
-	hgw_compat_set_cb_flush(hgw_context, flush_callback);
-    if(!hgw_context_compat_check(hgw_context)) return 0;
-
-	/* hildon-games-wrapper part */
-    	hgw_msg_compat_receive(hgw_context, 0);
-	usleep(100);
-#endif
-	// Main game
-	crazy_main();
-
-#if HGW_FUNC
-	hgw_context_compat_destroy_deinit(hgw_context);
-#endif
-
 	return 0;
 }

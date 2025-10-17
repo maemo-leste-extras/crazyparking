@@ -24,6 +24,7 @@
 #include <time.h>
 #include <string.h>
 #include "images.h"
+#include "crazypark.h"
 
 struct CAR car[CARS];
 struct STATE state;
@@ -64,7 +65,9 @@ void ReadMaze() {
 	int big, horizontal, x, y;
 		
 	// Open maze file
-	han = fopen(MAZEPREFIX "/mazes.txt", "rt");
+        char *fn = crazypark_file_path("mazes/mazes.txt");
+	han = fopen(fn, "rt");
+        free(fn);
 	
 	// Read file
 	srand(time(NULL));

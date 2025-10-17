@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=CrazyParking
+Exec=crazyparking
+Icon=/usr/share/crazyparking/pixmaps/qgn_list_crazyparking.png

@@ -1,0 +1,6 @@
+/build
+/debian/crazyparking
+/debian/debhelper-build-stamp
+/debian/.debhelper
+/debian/files
+/debian/crazyparking.substvars

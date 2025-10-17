@@ -22,6 +22,7 @@
 */ 
 #include "images.h"
 #include "level.h"
+#include "crazypark.h"
 
 // Global variables
 int sound = 0;
@@ -39,8 +40,10 @@ SDL_Surface *load_image(char *filename, int transparent) {
 	SDL_Surface *img, *img2;
 
 	// Load file image
-	sprintf(filepath, "%s/%s", GFXPREFIX, filename);
-	img = SDL_LoadBMP(filepath);
+	sprintf(filepath, "pixmaps/%s", filename);
+        char *fn = crazypark_file_path(filepath);
+	img = SDL_LoadBMP(fn);
+        free(fn);
 	if (!img) {
 		fprintf(stderr, "File not found: %s\n", filepath);
 		return 0;
