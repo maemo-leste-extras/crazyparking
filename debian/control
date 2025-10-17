@@ -3,7 +3,7 @@ Section: user/games
 Priority: optional
 Maintainer: Mikko Vartiainen <mvartiainen@gmail.com>
 XSBC-Original-Maintainer: Marcelo Lira
-Build-Depends: debhelper-compat (= 13), dh-autoreconf, libsdl1.2-dev, libsdl-mixer1.2-dev, meson, cmake
+Build-Depends: debhelper-compat (= 13), dh-autoreconf, libsdl1.2-dev, libsdl-mixer1.2-dev, meson
 Standards-Version: 3.6.0
 
 Package: crazyparking

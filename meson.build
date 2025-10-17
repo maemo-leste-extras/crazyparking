@@ -1,6 +1,6 @@
 project('crazyparking', 'c')
 
-sdl = dependency('SDL')
+sdl = dependency('sdl')
 sdl_mixer = dependency('SDL_mixer')
 
 executable('crazyparking',
