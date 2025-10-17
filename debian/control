@@ -1,0 +1,50 @@
+Source: crazyparking
+Section: user/games
+Priority: optional
+Maintainer: Mikko Vartiainen <mvartiainen@gmail.com>
+XSBC-Original-Maintainer: Marcelo Lira
+Build-Depends: libhildon1-dev, libhildonfm2-dev, libsdl1.2-dev, libsdl-mixer1.2-dev, hildon-games-wrapper-dev, osso-games-startup-dev
+Standards-Version: 3.6.0
+
+
+Package: crazyparking
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, osso-games-startup
+Description: Simple Rush-hour based puzzle game with 12 levels
+XB-Maemo-Display-Name: CrazyParking
+XB-Maemo-Icon-26:
+ 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
+ SUVORK5CYII=
+ ====

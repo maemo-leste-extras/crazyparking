@@ -1,0 +1,37 @@
+/**
+   @file crazyparking.c
+
+   Wrapper crazyparking launcher
+   <p>
+   Copyright (c) 2005 INdT. All eigths reserved.
+
+   @author Andre Moreira Magalhaes <andre.magalhaes@indt.org.br>
+*/
+
+#include <stdio.h>
+#include <unistd.h>
+
+char *argh[] = { "@wrapperdir@/wrapper",
+		 "@wrapperdir@/games/crazyparking.game",
+		 NULL };
+
+int main(int argc, char *argv[])
+{
+  FILE *pFile;
+  
+  pFile = fopen ("/usr/games/.gamewrapper/crazyparking.debug", "a");
+  if (pFile) {
+    fprintf (pFile, "app launched\n");
+    fclose (pFile);
+  }
+
+  if (execv ("@wrapperdir@/wrapper", argh) == -1) {
+    pFile = fopen ("/tmp/.gamewrapper/debug/crazyparking.debug", "a");
+    if (pFile) {
+      fprintf (pFile, "cannot execute wrapper\n");
+      fclose (pFile);
+    }
+  }
+
+  return 0;
+}

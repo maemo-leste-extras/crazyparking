@@ -1,0 +1,12 @@
+# Crazyparking config file
+
+[Startup Entry]
+Name=crazyparking
+Version=@VERSION@
+Title=CrazyParking
+GettextPackage=crazyparking
+Image=@datadir@/crazyparking/pixmaps/games-startup-crazyparking.png
+PluginPath=@datadir@/crazyparking/crazyparking_plugin.so
+ServiceName=br.org.indt.crazyparking
+PathName=/br/org/indt/crazyparking
+InterfaceName=br.org.indt.crazyparking
